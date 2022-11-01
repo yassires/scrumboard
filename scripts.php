@@ -15,26 +15,28 @@ function getTasks($status)
    
     $index = 1;
     require('database.php');
-    $requete = "SELECT * from tasks";
+    $requete = "SELECT t.id,t.title,t.task_datetime ,t.description,ty.id as tyid,ty.name as types,p.id as idP, p.name as priorities,stt.id as sttid,stt.name as statuses
+    FROM tasks as t,types as ty ,statuses as stt , priorities as p 
+    WHERE t.type_id=ty.id AND t.priority_id=p.id AND t.status_id=stt.id;";
     $query = mysqli_query($connc, $requete);       //mysqli_query : 
     while ($row = mysqli_fetch_assoc($query)) {    //mysqli_fetch_assoc :
-
+        // var_dump($row);
         //CODE HERE
-        if ($row['status_id'] == $status) {
-            if ($status == 1) {
+        
+        if ($row['statuses'] == $status) {
+            if ($row["statuses"]== "To Do") {
                 $icon = "fa-regular fa-clock ms-10px";
             };
-            if ($status == 2) {
+            if ($row["statuses"] == "In Progress") {
                 $icon = "spinner-border spinner-border-sm ms-10px";
             };
-            if ($status == 3) {
+            if ($row["statuses"] == "Done") {
                 $icon = "fa-regular fa-circle-check ms-10px";
             };
-            if ($row['status_id'] == $status) {
-                $priority = $row['priority_id'] == 1 ? 'Low' : ($row['priority_id'] == 2 ? 'Medium' : ($row['priority_id'] == 3 ? 'High' : 'Critical'));
-                $type = $row['type_id'] == 1 ? 'Feature' : 'Bug';
+            
+                $type = $row['types'] == 1 ? 'Feature' : 'Bug';
                 $id = $row['id'];
-                echo '<button class="d-flex w-100 border-0 border-top"  href="#modal-task" data-bs-toggle="modal" onclick="edit(' . $id . ')" data-status =' . $row["status_id"] . ' id=' . $row['id'] . '>
+                echo '<button class="d-flex w-100 border-0 border-top"  href="#modal-task" data-bs-toggle="modal" onclick="edit(' . $id . ')" data-status =' . $row["sttid"] . ' id=' . $row['id'] . '>
                     <div class="text-green fs-4 px-2">
                         <i class="' . $icon . '"></i> 
                     </div>
@@ -45,13 +47,13 @@ function getTasks($status)
                             <div class="fs-5" id="description' . $id . '" desc="' . $row['description'] . '">' . $row['description'] . '</div>
                         </div>
                         <div class="my-10px">
-                            <span class="bg-blue-500 p-5px px-10px text-white rounded-2" id="priority' . $id . '" priority="' . $row['priority_id'] . '">' . $priority . '</span>
-                            <span class="bg-gray-400 p-5px px-10px text-black rounded-2" id="type' . $id . '" type="' . $row['type_id'] . '">' . $type . '</span>
+                            <span class="bg-blue-500 p-5px px-10px text-white rounded-2" id="priority' . $id . '" priority="' . $row['idP'] . '">' . $row['priorities'] . '</span>
+                            <span class="bg-gray-400 p-5px px-10px text-black rounded-2" id="type' . $id . '" type="' . $row['tyid'] . '">' .$row['types']. '</span>
                         </div>
                     </div>
                 </button>';
             }
-        }
+        
     }
     //SQL SELECT
     
@@ -100,7 +102,7 @@ function updateTask()
     $description = $_POST['description'];
     //CODE HERE
 
-    $upd = "UPDATE  `tasks` SET  `title`='$title',`type_id`='$type',`priority_id`='$priority',`status_id`='$status',`task_datetime`='$date',`description`='$description' WHERE id = '$id'";
+    $upd = "UPDATE  `tasks` SET  `title`='$title',`type_id`='$type',`priority_id`='$priority',`status_id`='".$status."',`task_datetime`='$date',`description`='$description' WHERE id = '$id'";
     mysqli_query($connc, $upd);
     //SQL UPDATE
     $_SESSION['message'] = "Task has been updated successfully !";

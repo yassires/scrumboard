@@ -269,7 +269,7 @@ include('scripts.php');
 							<!-- TO DO TASKS HERE -->
 							<?php
 							//PHP CODE HERE
-							getTasks(1);
+							getTasks("To Do");
 							//DATA FROM getTasks() FUNCTION
 							?>
 						</div>
@@ -291,7 +291,7 @@ include('scripts.php');
 							<?php
 
 							//PHP CODE HERE
-							getTasks(2);
+							getTasks("In Progress");
 							//DATA FROM getTasks() FUNCTION
 							?>
 						</div>
@@ -312,7 +312,7 @@ include('scripts.php');
 							<!-- DONE TASKS HERE -->
 							<?php
 							//PHP CODE HERE
-							getTasks(3);
+							getTasks("Done");
 							//DATA FROM getTasks() FUNCTION
 							?>
 						</div>
