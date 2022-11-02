@@ -15,7 +15,7 @@ function getTasks($status)
    
     $index = 1;
     require('database.php');
-    $requete = "SELECT t.id,t.title,t.task_datetime ,t.description,ty.id as tyid,ty.name as types,p.id as idP, p.name as priorities,stt.id as sttid,stt.name as statuses
+    $requete = "SELECT t.id,t.title,t.task_datetime  ,t.description,ty.id as tyid,ty.name as types,p.id as idP, p.name as priorities,stt.id as sttid,stt.name as statuses
     FROM tasks as t,types as ty ,statuses as stt , priorities as p 
     WHERE t.type_id=ty.id AND t.priority_id=p.id AND t.status_id=stt.id;";
     $query = mysqli_query($connc, $requete);       //mysqli_query : 
